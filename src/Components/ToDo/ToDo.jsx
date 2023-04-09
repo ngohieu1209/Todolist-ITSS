@@ -45,9 +45,13 @@ const ToDo = () => {
             return;
         }
 
-        if (window.confirm('¿Está seguro que desea eliminar todos los elementos de la lista?')) {
-            setTodoList([])
-            saveToLocalStorage(todoList)
+        if (
+          window.confirm(
+            'Are you sure you want to remove all items from the list?'
+          )
+        ) {
+          setTodoList([]);
+          saveToLocalStorage(todoList);
         }
         return;
     }
@@ -64,44 +68,46 @@ const ToDo = () => {
     }
 
     return (
-        <>
-            <h1 style={{ textAlign: "center", marginBottom: '30px' }}>ToDo List</h1>
-            <InputContainer onSubmit={agregarLista}>
-                <InputUI
-                    type="text"
-                    onChange={handleInput}
-                    value={text}
-                    autoComplete="off"
-                    placeholder="Ingrese una tarea"
+      <>
+        <h1 style={{ textAlign: 'center', marginBottom: '30px' }}>TodoList</h1>
+        <InputContainer onSubmit={agregarLista}>
+          <InputUI
+            type='text'
+            onChange={handleInput}
+            value={text}
+            autoComplete='off'
+            placeholder='Enter a task'
+          />
+          <ButtonUI type='submit'>Add</ButtonUI>
+          <ButtonUI
+            type='button'
+            color='true'
+            onClick={deleteList}
+            disabled={!todoList.length ? true : false}
+          >
+            Delete List
+          </ButtonUI>
+        </InputContainer>
+
+        <ULContainer onClick={deleteItem}>
+          {todoList.map((task) => (
+            <LiItems key={task.id}>
+              {task.task}
+              <ButtonTransparent className='trashIcon' data-idef={task.id}>
+                <FaTrash
+                  style={{
+                    color: 'rgba(235, 0, 70, 1)',
+                    padding: '2px',
+                    fontSize: '28px',
+                    pointerEvents: 'none',
+                  }}
                 />
-                <ButtonUI type="submit">Agregar</ButtonUI>
-                <ButtonUI
-                    type='button'
-                    color="true"
-                    onClick={deleteList}
-                    disabled={!todoList.length ? true : false}
-                >Eliminar Lista</ButtonUI>
-
-            </InputContainer>
-
-            <ULContainer onClick={deleteItem}>
-                {todoList.map(task => (
-                    <LiItems key={task.id} >
-                        {task.task}
-                        <ButtonTransparent className="trashIcon" data-idef={task.id}>
-                            <FaTrash
-                                style={{ color: 'rgba(235, 0, 70, 1)', padding: '2px', fontSize: '28px', pointerEvents:'none'}}
-                            />
-                        </ButtonTransparent>
-
-
-                    </LiItems>
-                ))}
-
-            </ULContainer>
-
-        </>
-    )
+              </ButtonTransparent>
+            </LiItems>
+          ))}
+        </ULContainer>
+      </>
+    );
 }
 export default ToDo
 
